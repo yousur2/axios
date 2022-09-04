@@ -1,149 +1,97 @@
-# axios
+# 开始
 
-[![npm version](https://img.shields.io/npm/v/axios.svg?style=flat-square)](https://www.npmjs.org/package/axios)
-[![CDNJS](https://img.shields.io/cdnjs/v/axios.svg?style=flat-square)](https://cdnjs.com/libraries/axios)
-![Build status](https://github.com/axios/axios/actions/workflows/ci.yml/badge.svg)
-[![Gitpod Ready-to-Code](https://img.shields.io/badge/Gitpod-Ready--to--Code-blue?logo=gitpod)](https://gitpod.io/#https://github.com/axios/axios) 
-[![code coverage](https://img.shields.io/coveralls/mzabriskie/axios.svg?style=flat-square)](https://coveralls.io/r/mzabriskie/axios)
-[![install size](https://packagephobia.now.sh/badge?p=axios)](https://packagephobia.now.sh/result?p=axios)
-[![npm downloads](https://img.shields.io/npm/dm/axios.svg?style=flat-square)](https://npm-stat.com/charts.html?package=axios)
-[![gitter chat](https://img.shields.io/gitter/room/mzabriskie/axios.svg?style=flat-square)](https://gitter.im/mzabriskie/axios)
-[![code helpers](https://www.codetriage.com/axios/axios/badges/users.svg)](https://www.codetriage.com/axios/axios)
-[![Known Vulnerabilities](https://snyk.io/test/npm/axios/badge.svg)](https://snyk.io/test/npm/axios)
-![npm bundle size](https://img.shields.io/bundlephobia/minzip/axios)
+基于promise可以用于浏览器和node.js的网络请求库
 
-Promise based HTTP client for the browser and node.js
+**axios 是什么?**
 
-> New axios docs website: [click here](https://axios-http.com/)
+axios 是一个基于ES6 `promise` 网络请求库，作用于node.js 和浏览器中。 它是 isomorphic 的(即同一套代码可以运行在浏览器和node.js中)。在服务端它使用原生 node.js 中 `http` 模块, 而在客户端(浏览器)则使用 `XMLHttpRequests`。
 
-## Table of Contents
+# 特性
 
-  - [Features](#features)
-  - [Browser Support](#browser-support)
-  - [Installing](#installing)
-  - [Example](#example)
-  - [Axios API](#axios-api)
-  - [Request method aliases](#request-method-aliases)
-  - [Concurrency 👎](#concurrency-deprecated)
-  - [Creating an instance](#creating-an-instance)
-  - [Instance methods](#instance-methods)
-  - [Request Config](#request-config)
-  - [Response Schema](#response-schema)
-  - [Config Defaults](#config-defaults)
-    - [Global axios defaults](#global-axios-defaults)
-    - [Custom instance defaults](#custom-instance-defaults)
-    - [Config order of precedence](#config-order-of-precedence)
-  - [Interceptors](#interceptors)
-    - [Multiple Interceptors](#multiple-interceptors)
-  - [Handling Errors](#handling-errors)
-  - [Cancellation](#cancellation)
-    - [AbortController](#abortcontroller)
-    - [CancelToken 👎](#canceltoken-deprecated)
-  - [Using application/x-www-form-urlencoded format](#using-applicationx-www-form-urlencoded-format)
-    - [URLSearchParams](#urlsearchparams)
-    - [Query string](#query-string-older-browsers)
-    - [🆕 Automatic serialization](#-automatic-serialization-to-urlsearchparams)        
-  - [Using multipart/form-data format](#using-multipartform-data-format)    
-    - [FormData](#formdata)
-    - [🆕 Automatic serialization](#-automatic-serialization-to-formdata) 
-  - [Files Posting](#files-posting)
-  - [HTML Form Posting](#-html-form-posting-browser)
-  - [Semver](#semver)
-  - [Promises](#promises)
-  - [TypeScript](#typescript)
-  - [Resources](#resources)
-  - [Credits](#credits)
-  - [License](#license)
+- 从浏览器创建 XMLHttpRequests
+- 从 node.js 创建 http 请求
+- 支持 Promise API
+- 拦截请求和响应
+- 转换请求和响应数据
+- 取消请求
+- 自动转换JSON数据
+- 🆕自动序列化数据对象成 multipart/form-data 或 x-www-form-urlencoded 编码格式
+- 客户端支持防御XSRF
 
-## Features
+# 安装
 
-- Make [XMLHttpRequests](https://developer.mozilla.org/en-US/docs/Web/API/XMLHttpRequest) from the browser
-- Make [http](https://nodejs.org/api/http.html) requests from node.js
-- Supports the [Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise) API
-- Intercept request and response
-- Transform request and response data
-- Cancel requests
-- Automatic transforms for JSON data
-- 🆕 Automatic data object serialization to `multipart/form-data` and `x-www-form-urlencoded` body encodings
-- Client side support for protecting against [XSRF](https://en.wikipedia.org/wiki/Cross-site_request_forgery)
-
-## Browser Support
-
-![Chrome](https://raw.githubusercontent.com/alrra/browser-logos/main/src/chrome/chrome_48x48.png) | ![Firefox](https://raw.githubusercontent.com/alrra/browser-logos/main/src/firefox/firefox_48x48.png) | ![Safari](https://raw.githubusercontent.com/alrra/browser-logos/main/src/safari/safari_48x48.png) | ![Opera](https://raw.githubusercontent.com/alrra/browser-logos/main/src/opera/opera_48x48.png) | ![Edge](https://raw.githubusercontent.com/alrra/browser-logos/main/src/edge/edge_48x48.png) | ![IE](https://raw.githubusercontent.com/alrra/browser-logos/master/src/archive/internet-explorer_9-11/internet-explorer_9-11_48x48.png) |
---- | --- | --- | --- | --- | --- |
-Latest ✔ | Latest ✔ | Latest ✔ | Latest ✔ | Latest ✔ | 11 ✔ |
-
-[![Browser Matrix](https://saucelabs.com/open_sauce/build_matrix/axios.svg)](https://saucelabs.com/u/axios)
-
-## Installing
-
-Using npm:
+使用 npm:
 
 ```bash
 $ npm install axios
 ```
 
-Using bower:
+使用 bower:
 
 ```bash
 $ bower install axios
 ```
 
-Using yarn:
+使用 yarn:
 
 ```bash
 $ yarn add axios
 ```
 
-Using pnpm:
+使用 pnpm:
 
 ```bash
 $ pnpm add axios
 ```
 
-Using jsDelivr CDN:
+使用 jsDelivr CDN:
 
 ```html
 <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 ```
 
-Using unpkg CDN:
+使用 unpkg CDN:
 
 ```html
 <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 ```
 
-## Example
 
-### note: CommonJS usage
-In order to gain the TypeScript typings (for intellisense / autocomplete) while using CommonJS imports with `require()` use the following approach:
+
+# 演示	
+
+**注意: CommonJS 用法**
+
+为了获得TypeScript类型推断（智能感知/自动完成），在CommonJS中使用 `require()` 导入时请使用以下方法：
 
 ```js
 const axios = require('axios').default;
 
-// axios.<method> will now provide autocomplete and parameter typings
+// axios.<method> 能够提供自动完成和参数类型推断功能
 ```
 
-Performing a `GET` request
+
+
+演示一个 `GET` 请求
 
 ```js
-const axios = require('axios').default;
+const axios = require('axios');
 
-// Make a request for a user with a given ID
+// 向给定ID的用户发起请求
 axios.get('/user?ID=12345')
   .then(function (response) {
-    // handle success
+    // 处理成功情况
     console.log(response);
   })
   .catch(function (error) {
-    // handle error
+    // 处理错误情况
     console.log(error);
   })
   .then(function () {
-    // always executed
+    // 总是会执行（详情请了解Promise相关知识）
   });
 
-// Optionally the request above could also be done as
+// 上述请求也可以按以下方式完成（可选）
 axios.get('/user', {
     params: {
       ID: 12345
@@ -156,10 +104,10 @@ axios.get('/user', {
     console.log(error);
   })
   .then(function () {
-    // always executed
+    // 总是会执行
   });  
 
-// Want to use async/await? Add the `async` keyword to your outer function/method.
+// 想要使用async/await用法吗? 只需要添加async关键字到你的方法上
 async function getUser() {
   try {
     const response = await axios.get('/user?ID=12345');
@@ -170,10 +118,11 @@ async function getUser() {
 }
 ```
 
-> **NOTE:** `async/await` is part of ECMAScript 2017 and is not supported in Internet
-> Explorer and older browsers, so use with caution.
+注意: 由于'async/await' 是ECMAScript 2017中的一部分，而且在IE和一些旧的浏览器中不支持，所以使用时务必要小心。
 
-Performing a `POST` request
+
+
+演示一个 `POST` 请求
 
 ```js
 axios.post('/user', {
@@ -188,7 +137,9 @@ axios.post('/user', {
   });
 ```
 
-Performing multiple concurrent requests
+
+
+演示多个并发请求
 
 ```js
 function getUserAccount() {
@@ -206,14 +157,16 @@ Promise.all([getUserAccount(), getUserPermissions()])
   });
 ```
 
-## axios API
 
-Requests can be made by passing the relevant config to `axios`.
 
-##### axios(config)
+# axios API
+
+可以向 `axios` 传递相关配置来创建请求
+
+**axios(config)**
 
 ```js
-// Send a POST request
+// 发起一个 POST 请求
 axios({
   method: 'post',
   url: '/user/12345',
@@ -222,13 +175,10 @@ axios({
     lastName: 'Flintstone'
   }
 });
-```
-
-```js
-// GET request for remote image in node.js
+// 在 node.js 用GET请求获取远程图片
 axios({
   method: 'get',
-  url: 'https://bit.ly/2mTM3nY',
+  url: 'http://bit.ly/2mTM3nY',
   responseType: 'stream'
 })
   .then(function (response) {
@@ -236,42 +186,50 @@ axios({
   });
 ```
 
-##### axios(url[, config])
+**axios(url[, config])**
 
 ```js
-// Send a GET request (default method)
+// 发起一个 GET 请求 (默认请求方式)
 axios('/user/12345');
 ```
 
-### Request method aliases
+## 请求方式的别名
 
-For convenience, aliases have been provided for all common request methods.
+为了方便起见，已经为所有常见的请求方式提供了别名。
 
-##### axios.request(config)
-##### axios.get(url[, config])
-##### axios.delete(url[, config])
-##### axios.head(url[, config])
-##### axios.options(url[, config])
-##### axios.post(url[, data[, config]])
-##### axios.put(url[, data[, config]])
-##### axios.patch(url[, data[, config]])
+**axios.request(config)**
 
-###### NOTE
-When using the alias methods `url`, `method`, and `data` properties don't need to be specified in config.
+**axios.get(url[, config])**
 
-### Concurrency (Deprecated)
-Please use `Promise.all` to replace the below functions.
+**axios.delete(url[, config])**
 
-Helper functions for dealing with concurrent requests.
+**axios.head(url[, config])**
 
-axios.all(iterable)
-axios.spread(callback)
+**axios.options(url[, config])**
 
-### Creating an instance
+**axios.post(url[, data[, config]])**
 
-You can create a new instance of axios with a custom config.
+**axios.put(url[, data[, config]])**
 
-##### axios.create([config])
+**axios.patch(url[, data[, config]])**
+
+**注意**
+
+在使用别名方法时， `url`、`method`、`data` 这些属性都不必在配置中指定。
+
+# 并发（已过时）
+
+请使用 `Promise.all` 方法来替代下面这些方法。
+
+处理并发请求的辅助方法：
+
+axios.all(iterator) 和 axios.spread(callback)
+
+# 创建实例
+
+你可以使用自定义配置新建一个实例。
+
+**axios.create([config])**
 
 ```js
 const instance = axios.create({
@@ -281,188 +239,187 @@ const instance = axios.create({
 });
 ```
 
-### Instance methods
+## **实例方法**
 
-The available instance methods are listed below. The specified config will be merged with the instance config.
+以下是可用的实例方法。指定的配置将与实例的配置合并。
 
-##### axios#request(config)
-##### axios#get(url[, config])
-##### axios#delete(url[, config])
-##### axios#head(url[, config])
-##### axios#options(url[, config])
-##### axios#post(url[, data[, config]])
-##### axios#put(url[, data[, config]])
-##### axios#patch(url[, data[, config]])
-##### axios#getUri([config])
+**axios#request(config)**
 
-## Request Config
+**axios#get(url[, config])**
 
-These are the available config options for making requests. Only the `url` is required. Requests will default to `GET` if `method` is not specified.
+**axios#delete(url[, config])**
+
+**axios#head(url[, config])**
+
+**axios#options(url[, config])**
+
+**axios#post(url[, data[, config]])**
+
+**axios#put(url[, data[, config]])**
+
+**axios#patch(url[, data[, config]])**
+
+**axios#getUri([config])**
+
+
+
+# 请求配置
+
+这些是创建请求时可以用的配置选项。只有 `url` 是必需的。如果没有指定 `method`，请求将默认使用 'GET' 方法。
 
 ```js
 {
-  // `url` is the server URL that will be used for the request
+  // 'url' 是用于请求的服务器 URL
   url: '/user',
 
-  // `method` is the request method to be used when making the request
-  method: 'get', // default
+  // 'method' 是创建请求时使用的方式
+  method: 'get', // 默认值
 
-  // `baseURL` will be prepended to `url` unless `url` is absolute.
-  // It can be convenient to set `baseURL` for an instance of axios to pass relative URLs
-  // to methods of that instance.
+  // 'baseURL' 将自动添加在 'url' 前面，除非 'url' 是一个绝对 URL
+  // 为axios实例设置 'baseURL' 可以方便后续将相对 URL 传递给该实例的方法
   baseURL: 'https://some-domain.com/api/',
 
-  // `transformRequest` allows changes to the request data before it is sent to the server
-  // This is only applicable for request methods 'PUT', 'POST', 'PATCH' and 'DELETE'
-  // The last function in the array must return a string or an instance of Buffer, ArrayBuffer,
-  // FormData or Stream
-  // You may modify the headers object.
+  // 'transformRequest' 允许在将请求数据发送给服务器前，修改请求数据
+  // 它只适用于 'PUT', 'POST', 'PATCH' 和 'DELETE' 请求方式
+  // 数组中最后一个函数必须返回一个字符串，或者一个关于Buffer, ArrayBuffer, FormData 或 Stream 的实例
+  // 你可以修改请求头
   transformRequest: [function (data, headers) {
-    // Do whatever you want to transform the data
+    // 对发送的 data 进行任意转换处理
 
     return data;
   }],
 
-  // `transformResponse` allows changes to the response data to be made before
-  // it is passed to then/catch
+  // 'transformResponse' 允许在将响应数据传递给 then/catch 方法前，修改响应数据
   transformResponse: [function (data) {
-    // Do whatever you want to transform the data
+    // 对接收的 data 进行任意转换处理
 
     return data;
   }],
 
-  // `headers` are custom headers to be sent
+  // 'headers' 可以自定义请求头
   headers: {'X-Requested-With': 'XMLHttpRequest'},
 
-  // `params` are the URL parameters to be sent with the request
-  // Must be a plain object or a URLSearchParams object
+  // 'params' 是与请求一起发送的 URL 参数
+  // 必须是一个简单对象或 URLSearchParams 对象
   params: {
     ID: 12345
   },
 
-  // `paramsSerializer` is an optional config in charge of serializing `params`
+  // 'paramsSerializer' 是可选方法，主要用于序列化 'params'
   paramsSerializer: {
-    indexes: null // array indexes format (null - no brackets, false - empty brackets, true - brackets with indexes)
+    indexes: null // 数组索引格式(null 代表无括号, false 代表空括号, true 表示带索引的括号)
   },
 
-  // `data` is the data to be sent as the request body
-  // Only applicable for request methods 'PUT', 'POST', 'DELETE , and 'PATCH'
-  // When no `transformRequest` is set, must be of one of the following types:
-  // - string, plain object, ArrayBuffer, ArrayBufferView, URLSearchParams
-  // - Browser only: FormData, File, Blob
-  // - Node only: Stream, Buffer
+  // 'data' 是作为请求体被发送的数据
+  // 仅适用 'PUT', 'POST', 'DELETE 和 'PATCH' 请求方式
+  // 在没有设置 'transformRequest' 时，则必须是以下类型之一:
+  // - string, 简单对象, ArrayBuffer, ArrayBufferView, URLSearchParams
+  // - 浏览器专属: FormData, File, Blob
+  // - Node 专属: Stream, Buffer
   data: {
     firstName: 'Fred'
   },
   
-  // syntax alternative to send data into the body
-  // method post
-  // only the value is sent, not the key
+  // 发送请求体数据的可选语法
+  // 请求方式 post
+  // 只有 value 会被发送，key 则不会
   data: 'Country=Brasil&City=Belo Horizonte',
 
-  // `timeout` specifies the number of milliseconds before the request times out.
-  // If the request takes longer than `timeout`, the request will be aborted.
-  timeout: 1000, // default is `0` (no timeout)
+  // 'timeout' 指定请求超时的毫秒数
+  // 如果请求时间超过 'timeout' 的值，则请求会被中断
+  timeout: 1000, // 默认值是 '0' (永不超时)
 
-  // `withCredentials` indicates whether or not cross-site Access-Control requests
-  // should be made using credentials
+  // 'withCredentials' 表示跨域请求时是否需要使用凭证(例如，cookie)
   withCredentials: false, // default
 
-  // `adapter` allows custom handling of requests which makes testing easier.
-  // Return a promise and supply a valid response (see lib/adapters/README.md).
+  // 'adapter' 允许自定义处理请求, 这使测试更加容易
+  // 返回一个 promise 并提供一个有效的响应
   adapter: function (config) {
     /* ... */
   },
 
-  // `auth` indicates that HTTP Basic auth should be used, and supplies credentials.
-  // This will set an `Authorization` header, overwriting any existing
-  // `Authorization` custom headers you have set using `headers`.
-  // Please note that only HTTP Basic auth is configurable through this parameter.
-  // For Bearer tokens and such, use `Authorization` custom headers instead.
+  // 'auth' 表示使用 HTTP Basic Auth 提供凭证
+  // 这将设置一个 'Authorization' 请求头，它会覆盖 'headers' 中已存在的自定义 'Authorization' 请求头
+  // 请注意，只有HTTP Basic Auth可以通过此参数配置
+  // 对于Bearer tokens等令牌，请使用自定义 'Authorization' 中信息来替代
   auth: {
     username: 'janedoe',
     password: 's00pers3cret'
   },
 
-  // `responseType` indicates the type of data that the server will respond with
-  // options are: 'arraybuffer', 'document', 'json', 'text', 'stream'
-  //   browser only: 'blob'
-  responseType: 'json', // default
+  // 'responseType' 表示服务器将要响应的数据类型
+  // 选项包括: 'arraybuffer', 'document', 'json', 'text', 'stream'
+  // 浏览器专属：'blob'
+  responseType: 'json', // 默认值
 
-  // `responseEncoding` indicates encoding to use for decoding responses (Node.js only)
-  // Note: Ignored for `responseType` of 'stream' or client-side requests
-  responseEncoding: 'utf8', // default
+  // 'responseEncoding' 表示用于解码响应的编码 (Node.js 专属)
+  // 注意：忽略 'responseType' 为 'stream' 的响应或客户端请求
+  responseEncoding: 'utf8', // 默认值
 
-  // `xsrfCookieName` is the name of the cookie to use as a value for xsrf token
-  xsrfCookieName: 'XSRF-TOKEN', // default
+  // 'xsrfCookieName' 是 xsrf token 的值，被用作 cookie 的名称
+  xsrfCookieName: 'XSRF-TOKEN', // 默认值
 
-  // `xsrfHeaderName` is the name of the http header that carries the xsrf token value
-  xsrfHeaderName: 'X-XSRF-TOKEN', // default
+  // 'xsrfHeaderName' 是带有 xsrf token 值的 http 请求头名称
+  xsrfHeaderName: 'X-XSRF-TOKEN', // 默认值
 
-  // `onUploadProgress` allows handling of progress events for uploads
-  // browser only
+  // 'onUploadProgress' 允许处理上传事件
+  // 浏览器专属
   onUploadProgress: function (progressEvent) {
-    // Do whatever you want with the native progress event
+    // 处理原生进度事件
   },
 
-  // `onDownloadProgress` allows handling of progress events for downloads
-  // browser only
+  // 'onDownloadProgress' 允许处理下载事件
+  // 浏览器专属
   onDownloadProgress: function (progressEvent) {
-    // Do whatever you want with the native progress event
+    // 处理原生进度事件
   },
 
-  // `maxContentLength` defines the max size of the http response content in bytes allowed in node.js
+  // 'maxContentLength' 定义了node.js中允许的HTTP响应内容的最大字节数
   maxContentLength: 2000,
 
-  // `maxBodyLength` (Node only option) defines the max size of the http request content in bytes allowed
+  // 'maxBodyLength' 定义了node.js中允许的http请求内容的最大字节数
   maxBodyLength: 2000,
 
-  // `validateStatus` defines whether to resolve or reject the promise for a given
-  // HTTP response status code. If `validateStatus` returns `true` (or is set to `null`
-  // or `undefined`), the promise will be resolved; otherwise, the promise will be
-  // rejected.
+  // 'validateStatus' 定义了对于给定的HTTP状态码是 resolve promise 还是 reject promise。
+  // 如果 'validateStatus' 返回 'true' (或者设置为 'null' 或 'undefined'),
+  // 则 Promise 将会是 resolved; 否则，会是 rejected
   validateStatus: function (status) {
-    return status >= 200 && status < 300; // default
+    return status >= 200 && status < 300; // 默认值
   },
 
-  // `maxRedirects` defines the maximum number of redirects to follow in node.js.
-  // If set to 0, no redirects will be followed.
-  maxRedirects: 21, // default
-
-  // `beforeRedirect` defines a function that will be called before redirect.
-  // Use this to adjust the request options upon redirecting,
-  // to inspect the latest response headers,
-  // or to cancel the request by throwing an error
-  // If maxRedirects is set to 0, `beforeRedirect` is not used.
+  // 'maxRedirects' 定义了在node.js中要遵循的最大重定向数
+  // 如果设置为0，则不会进行重定向
+  maxRedirects: 5, // 默认值
+  
+  // 'beforeRedirect' 是在重定向前要执行的函数
+  // 可以使用它在重定向前调整请求选项, 检查最新的响应头, 或者通过抛出错误来取消请求
+  // 如果 'maxRedirects' 被设置为0, 'beforeRedirect' 将不会被使用
   beforeRedirect: (options, { headers }) => {
     if (options.hostname === "example.com") {
       options.auth = "user:password";
     }
   },
 
-  // `socketPath` defines a UNIX Socket to be used in node.js.
-  // e.g. '/var/run/docker.sock' to send requests to the docker daemon.
-  // Only either `socketPath` or `proxy` can be specified.
-  // If both are specified, `socketPath` is used.
+  // 'socketPath' 定义了在node.js中使用的UNIX套接字
+  // 例如 '/var/run/docker.sock' 发送请求到 docker 守护进程
+  // 只能指定 'socketPath' 或 'proxy' 
+  // 若都指定，将使用 'socketPath' 
   socketPath: null, // default
 
-  // `httpAgent` and `httpsAgent` define a custom agent to be used when performing http
-  // and https requests, respectively, in node.js. This allows options to be added like
-  // `keepAlive` that are not enabled by default.
+  // 'httpAgent' 和 'httpsAgent' 分别定义了在node.js中执行http或https请求时要使用的自定义代理
+  // 这允许添加在默认情况下未启用的选项，例如 'keepAlive'
   httpAgent: new http.Agent({ keepAlive: true }),
   httpsAgent: new https.Agent({ keepAlive: true }),
 
-  // `proxy` defines the hostname, port, and protocol of the proxy server.
-  // You can also define your proxy using the conventional `http_proxy` and
-  // `https_proxy` environment variables. If you are using environment variables
-  // for your proxy configuration, you can also define a `no_proxy` environment
-  // variable as a comma-separated list of domains that should not be proxied.
-  // Use `false` to disable proxies, ignoring environment variables.
-  // `auth` indicates that HTTP Basic auth should be used to connect to the proxy, and
-  // supplies credentials.
-  // This will set an `Proxy-Authorization` header, overwriting any existing
-  // `Proxy-Authorization` custom headers you have set using `headers`.
-  // If the proxy server uses HTTPS, then you must set the protocol to `https`. 
+  // 'proxy' 定义了代理服务器的主机名, 端口和协议
+  // 你可以使用常规的 'http_proxy' 和 'https_proxy' 环境变量来定义自己的代理
+  // 如果你在代理配置中使用环境变量, 你还可以定义 'no_proxy' 环境变量来表示不应被代理的域,
+  // 以逗号分隔的列表形式呈现
+  // 使用 'false' 可以禁用代理功能, 同时环境变量也会被忽略
+  // 'auth' 表示应使用HTTP Basic Auth连接到代理, 并且提供凭证
+  // 这将设置一个 'Proxy-Authorization' 请求头，
+  // 它会覆盖 'headers' 中已存在的自定义 'Proxy-Authorization' 请求头
+  // 如果代理服务器使用 HTTPS，则必须设置 protocol 为'https'
   proxy: {
     protocol: 'https',
     host: '127.0.0.1',
@@ -473,29 +430,26 @@ These are the available config options for making requests. Only the `url` is re
     }
   },
 
-  // `cancelToken` specifies a cancel token that can be used to cancel the request
-  // (see Cancellation section below for details)
+  // 'cancelToken' 指定可以用于取消请求的取消令牌
   cancelToken: new CancelToken(function (cancel) {
   }),
 
-  // an alternative way to cancel Axios requests using AbortController
+  // AbortController——另一种取消axios请求的方法
   signal: new AbortController().signal,
-
-  // `decompress` indicates whether or not the response body should be decompressed 
-  // automatically. If set to `true` will also remove the 'content-encoding' header 
-  // from the responses objects of all decompressed responses
-  // - Node only (XHR cannot turn off decompression)
-  decompress: true // default
-
-  // `insecureHTTPParser` boolean.
+  
+  // 'decompress' 表示是否应该自动的解压响应体 
+  // 如果被设置为true, 将会从已经解压的响应对象中删除 'content-encoding' 响应头
+  // 仅结点(XHR无法关闭解压)
+  decompress: true // 默认值
+    
+  // 以下为新内容
+    
+  // 'insecureHTTPParser' 布尔值
   // Indicates where to use an insecure HTTP parser that accepts invalid HTTP headers.
   // This may allow interoperability with non-conformant HTTP implementations.
-  // Using the insecure parser should be avoided.
-  // see options https://nodejs.org/dist/latest-v12.x/docs/api/http.html#http_http_request_url_options_callback
-  // see also https://nodejs.org/en/blog/vulnerability/february-2020-security-releases/#strict-http-header-parsing-none
-  insecureHTTPParser: undefined // default
-
-  // transitional options for backward compatibility that may be removed in the newer versions
+  // 应避免使用不安全的解析器
+  insecureHTTPParser: undefined // 默认值
+    
   transitional: {
     // silent JSON parsing mode
     // `true`  - ignore JSON parsing errors and set response.data to null if parsing failed (old behaviour)
@@ -523,37 +477,46 @@ These are the available config options for making requests. Only the `url` is re
 }
 ```
 
-## Response Schema
 
-The response for a request contains the following information.
+
+# 响应结构
+
+一个请求的响应包含以下信息：
+
+- data
+- status
+- statusText
+- headers
+- config
+- request
 
 ```js
 {
-  // `data` is the response that was provided by the server
+  // `data` 由服务器提供的响应
   data: {},
 
-  // `status` is the HTTP status code from the server response
+  // `status` 来自服务器响应的 HTTP 状态码
   status: 200,
 
-  // `statusText` is the HTTP status message from the server response
+  // `statusText` 来自服务器响应的 HTTP 状态信息
   statusText: 'OK',
 
-  // `headers` the HTTP headers that the server responded with
-  // All header names are lowercase and can be accessed using the bracket notation.
-  // Example: `response.headers['content-type']`
+  // `headers` 是服务器响应头
+  // 所有的 header 名称都是小写，而且可以使用方括号语法访问
+  // 例如: `response.headers['content-type']`
   headers: {},
 
-  // `config` is the config that was provided to `axios` for the request
+  // `config` 是 `axios` 请求的配置信息
   config: {},
 
-  // `request` is the request that generated this response
-  // It is the last ClientRequest instance in node.js (in redirects)
-  // and an XMLHttpRequest instance in the browser
+  // `request` 是生成此响应的请求
+  // 在node.js中它是最后一个ClientRequest实例 (in redirects)，
+  // 在浏览器中则是 XMLHttpRequest 实例
   request: {}
 }
 ```
 
-When using `then`, you will receive the response as follows:
+当使用 `then` 时，您将接收如下响应:
 
 ```js
 axios.get('/user/12345')
@@ -564,110 +527,129 @@ axios.get('/user/12345')
     console.log(response.headers);
     console.log(response.config);
   });
+
+// 相同效果
+axios.get('/user/12345')
+  .then(function (response) {
+    console.log(response['data']);
+    console.log(response['status']);
+    console.log(response['statusText']);
+    console.log(response['headers']);
+    console.log(response['config']);
+    console.log(response['request']);
+  });
 ```
 
-When using `catch`, or passing a [rejection callback](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise/then) as second parameter of `then`, the response will be available through the `error` object as explained in the [Handling Errors](#handling-errors) section.
+当使用 `catch`，或者传递一个rejection callback作为 `then` 的第二个参数时，响应可以通过 `error` 对象被使用，正如下文中*错误处理*部分解释的那样。
 
-## Config Defaults
+> then() 最多需要两个参数，分别为：Promise的成功(resolved/fulfilled)和失败(rejected)情况的回调函数，即fulfillment_callback和rejection_callback。
 
-You can specify config defaults that will be applied to every request.
 
-### Global axios defaults
+
+# 默认配置
+
+您可以指定默认配置，它将作用于每个请求。
+
+**全局 axios 默认值**
 
 ```js
 axios.defaults.baseURL = 'https://api.example.com';
 
-// Important: If axios is used with multiple domains, the AUTH_TOKEN will be sent to all of them.
-// See below for an example using Custom instance defaults instead.
+// 重要提示: 如果该axios在多个域中使用, 则 AUTH_TOKEN 会被发送给所有的域
+// 请参阅下面的示例，使用自定义默认值
 axios.defaults.headers.common['Authorization'] = AUTH_TOKEN;
 
 axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded';
 ```
 
-### Custom instance defaults
+**自定义实例默认值**
 
 ```js
-// Set config defaults when creating the instance
+// 创建实例时配置默认值
 const instance = axios.create({
   baseURL: 'https://api.example.com'
 });
 
-// Alter defaults after instance has been created
+// 创建实例后修改默认值
 instance.defaults.headers.common['Authorization'] = AUTH_TOKEN;
 ```
 
-### Config order of precedence
+**配置的优先级**
 
-Config will be merged with an order of precedence. The order is library defaults found in [lib/defaults.js](https://github.com/axios/axios/blob/master/lib/defaults/index.js#L28), then `defaults` property of the instance, and finally `config` argument for the request. The latter will take precedence over the former. Here's an example.
+配置将会按优先级进行合并。它的顺序是：首先在**lib/defaults/index.js**中找到的库默认值，然后是实例的 `defaults` 属性，最后是请求的 `config` 参数。后面的优先级要高于前面的。下面有一个例子。
 
 ```js
-// Create an instance using the config defaults provided by the library
-// At this point the timeout config value is `0` as is the default for the library
+// 使用库提供的默认配置创建实例
+// 此时超时配置的默认值是 `0`
 const instance = axios.create();
 
-// Override timeout default for the library
-// Now all requests using this instance will wait 2.5 seconds before timing out
+// 重写库的超时默认值
+// 现在，所有使用此实例的请求都将等待2.5秒，然后才会超时
 instance.defaults.timeout = 2500;
 
-// Override timeout for this request as it's known to take a long time
+// 重写此请求的超时时间，因为该请求需要很长时间
 instance.get('/longRequest', {
   timeout: 5000
 });
 ```
 
-## Interceptors
 
-You can intercept requests or responses before they are handled by `then` or `catch`.
+
+# 拦截器
+
+在请求或响应被 `then` 或 `catch` 处理前拦截它们。
 
 ```js
-// Add a request interceptor
+// 添加请求拦截器
 axios.interceptors.request.use(function (config) {
-    // Do something before request is sent
+    // 在发送请求之前做些什么
     return config;
   }, function (error) {
-    // Do something with request error
+    // 对请求错误做些什么
     return Promise.reject(error);
   });
 
-// Add a response interceptor
+// 添加响应拦截器
 axios.interceptors.response.use(function (response) {
-    // Any status code that lie within the range of 2xx cause this function to trigger
-    // Do something with response data
+    // 位于 2xx 范围内的状态码都会触发该函数。
+    // 对响应数据做点什么
     return response;
   }, function (error) {
-    // Any status codes that falls outside the range of 2xx cause this function to trigger
-    // Do something with response error
+    // 超出 2xx 范围的状态码都会触发该函数。
+    // 对响应错误做点什么
     return Promise.reject(error);
   });
 ```
 
-If you need to remove an interceptor later you can.
+如果你稍后需要移除拦截器，可以这样：
 
 ```js
 const myInterceptor = axios.interceptors.request.use(function () {/*...*/});
 axios.interceptors.request.eject(myInterceptor);
 ```
 
-You can also clear all interceptors for requests or responses.
+你也可以移除所有关于请求或响应的拦截器。
+
 ```js
 const instance = axios.create();
 instance.interceptors.request.use(function () {/*...*/});
-instance.interceptors.request.clear(); // Removes interceptors from requests
+instance.interceptors.request.clear(); // 移除请求的拦截器
 instance.interceptors.response.use(function () {/*...*/});
-instance.interceptors.response.clear(); // Removes interceptors from responses
+instance.interceptors.response.clear(); // 移除响应的拦截器
 ```
 
-You can add interceptors to a custom instance of axios.
+可以给自定义的 axios 实例添加拦截器。
 
 ```js
 const instance = axios.create();
-instance.interceptors.request.use(function () {/*...*/});
+instance.interceptors.request.use(function () {/*...*/})
 ```
 
-When you add request interceptors, they are presumed to be asynchronous by default. This can cause a delay
-in the execution of your axios request when the main thread is blocked (a promise is created under the hood for 
-the interceptor and your request gets put on the bottom of the call stack). If your request interceptors are synchronous you can add a flag
-to the options object that will tell axios to run the code synchronously and avoid any delays in request execution.
+添加请求拦截器时，默认情况下假定它们是异步的。
+
+当主线程被阻塞时，这可能会导致axios请求的执行延迟（在拦截器的后台创建了一个promise，并且您的请求被放在调用堆栈的底部）。
+
+如果您的请求拦截器是同步的，您可以向options对象添加一个标志，该标志将告诉axios同步运行代码，并避免请求执行中的任何延迟。
 
 ```js
 axios.interceptors.request.use(function (config) {
@@ -676,11 +658,13 @@ axios.interceptors.request.use(function (config) {
 }, null, { synchronous: true });
 ```
 
-If you want to execute a particular interceptor based on a runtime check, 
-you can add a `runWhen` function to the options object. The interceptor will not be executed **if and only if** the return
-of `runWhen` is `false`. The function will be called with the config
-object (don't forget that you can bind your own arguments to it as well.) This can be handy when you have an
-asynchronous request interceptor that only needs to run at certain times.
+如果希望基于运行时检查执行特定的拦截器，可以向options对象添加runWhen函数。
+
+当且仅当runWhen返回为false时，将不执行拦截器。
+
+该函数将使用config对象调用（不要忘记，您也可以将自己的参数绑定给它）。
+
+当您有一个只需要在特定时间运行的异步请求拦截器时，这非常方便。
 
 ```js
 function onGetCall(config) {
@@ -692,56 +676,57 @@ axios.interceptors.request.use(function (config) {
 }, null, { runWhen: onGetCall });
 ```
 
-### Multiple Interceptors
+**多个拦截器**
 
-Given you add multiple response interceptors
-and when the response was fulfilled
+Given you add multiple response interceptors and when the response was fulfilled
+
 - then each interceptor is executed
 - then they are executed in the order they were added
 - then only the last interceptor's result is returned
 - then every interceptor receives the result of its predecessor
 - and when the fulfillment-interceptor throws
-    - then the following fulfillment-interceptor is not called
-    - then the following rejection-interceptor is called
-    - once caught, another following fulfill-interceptor is called again (just like in a promise chain).
-    
-Read [the interceptor tests](./test/specs/interceptors.spec.js) for seeing all this in code.
+  - then the following fulfillment-interceptor is not called
+  - then the following rejection-interceptor is called
+  - once caught, another following fulfill-interceptor is called again (just like in a promise chain).
 
-## Handling Errors
+Read **the interceptor tests** for seeing all this in code.
+
+
+
+# 错误处理
 
 ```js
 axios.get('/user/12345')
   .catch(function (error) {
     if (error.response) {
-      // The request was made and the server responded with a status code
-      // that falls out of the range of 2xx
+      // 请求成功发出且服务器也响应了状态码，但状态代码超出了 2xx 的范围
       console.log(error.response.data);
       console.log(error.response.status);
       console.log(error.response.headers);
     } else if (error.request) {
-      // The request was made but no response was received
-      // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
-      // http.ClientRequest in node.js
+      // 请求已经成功发起，但没有收到响应
+      // `error.request` 在浏览器中是 XMLHttpRequest 的实例，
+      // 而在node.js中是 http.ClientRequest 的实例
       console.log(error.request);
     } else {
-      // Something happened in setting up the request that triggered an Error
+      // 发送请求时出了点问题
       console.log('Error', error.message);
     }
     console.log(error.config);
   });
 ```
 
-Using the `validateStatus` config option, you can define HTTP code(s) that should throw an error.
+使用 `validateStatus` 配置选项，可以自定义应该抛出错误的HTTP状态码。
 
 ```js
 axios.get('/user/12345', {
   validateStatus: function (status) {
-    return status < 500; // Resolve only if the status code is less than 500
+    return status < 500; // 只处理状态码小于500的情况
   }
 })
 ```
 
-Using `toJSON` you get an object with more information about the HTTP error.
+使用 `toJSON` 可以获取更多关于HTTP错误的信息。
 
 ```js
 axios.get('/user/12345')
@@ -750,11 +735,13 @@ axios.get('/user/12345')
   });
 ```
 
-## Cancellation
 
-### AbortController
 
-Starting from `v0.22.0` Axios supports AbortController to cancel requests in fetch API way:
+# 取消请求
+
+**AbortController**
+
+从 `v0.22.0` 开始，Axios 支持以 fetch API 方式—— `AbortController`取消请求：
 
 ```js
 const controller = new AbortController();
@@ -764,19 +751,19 @@ axios.get('/foo/bar', {
 }).then(function(response) {
    //...
 });
-// cancel the request
+// 取消请求
 controller.abort()
 ```
 
-### CancelToken `👎deprecated`
+**CancelToken (已过时)**
 
-You can also cancel a request using a *CancelToken*.
+您还可以使用 *cancel token* 取消一个请求。
 
-> The axios cancel token API is based on the withdrawn [cancelable promises proposal](https://github.com/tc39/proposal-cancelable-promises).
+Axios 的 cancel token API 是基于被撤销 **cancelable promises proposal**。
 
-> This API is deprecated since v0.22.0 and shouldn't be used in new projects
+此 API 从 `v0.22.0` 开始已被弃用，不应在新项目中使用。
 
-You can create a cancel token using the `CancelToken.source` factory as shown below:
+可以使用 `CancelToken.source` 工厂方法创建一个 cancel token ，如下所示：
 
 ```js
 const CancelToken = axios.CancelToken;
@@ -788,7 +775,7 @@ axios.get('/user/12345', {
   if (axios.isCancel(thrown)) {
     console.log('Request canceled', thrown.message);
   } else {
-    // handle error
+    // 处理错误
   }
 });
 
@@ -798,11 +785,11 @@ axios.post('/user/12345', {
   cancelToken: source.token
 })
 
-// cancel the request (the message parameter is optional)
+// 取消请求（message 参数是可选的）
 source.cancel('Operation canceled by the user.');
 ```
 
-You can also create a cancel token by passing an executor function to the `CancelToken` constructor:
+也可以通过传递一个 executor 函数到 `CancelToken` 的构造函数来创建一个 cancel token：
 
 ```js
 const CancelToken = axios.CancelToken;
@@ -810,44 +797,82 @@ let cancel;
 
 axios.get('/user/12345', {
   cancelToken: new CancelToken(function executor(c) {
-    // An executor function receives a cancel function as a parameter
+    // executor 函数接收一个 cancel 函数作为参数
     cancel = c;
   })
 });
 
-// cancel the request
+// 取消请求
 cancel();
 ```
 
-> Note: you can cancel several requests with the same cancel token/abort controller.
-> If a cancellation token is already cancelled at the moment of starting an Axios request, then the request is cancelled immediately, without any attempts to make a real request.
+> 注意: 您可以使用同一个 cancel token 或 abort controller 取消多个请求。如果取消令牌在启动axios请求时已被取消，则该请求将立即取消，而不会尝试发出真正的请求。
 
-> During the transition period, you can use both cancellation APIs, even for the same request:
+在过渡期间，您可以使用这两种取消 API，即使是针对同一个请求：
 
-## Using `application/x-www-form-urlencoded` format
+```js
+const controller = new AbortController();
 
-### URLSearchParams
+const CancelToken = axios.CancelToken;
+const source = CancelToken.source();
 
-By default, axios serializes JavaScript objects to `JSON`. To send data in the [`application/x-www-form-urlencoded` format](https://developer.mozilla.org/en-US/docs/Web/HTTP/Methods/POST) instead, you can use the [`URLSearchParams`](https://developer.mozilla.org/en-US/docs/Web/API/URLSearchParams) API, which is [supported](http://www.caniuse.com/#feat=urlsearchparams) in the vast majority of browsers, [and Node](https://nodejs.org/api/url.html#url_class_urlsearchparams) starting with v10 (released in 2018).
+axios.get('/user/12345', {
+  cancelToken: source.token,
+  signal: controller.signal
+}).catch(function (thrown) {
+  if (axios.isCancel(thrown)) {
+    console.log('Request canceled', thrown.message);
+  } else {
+    // 处理错误
+  }
+});
+
+axios.post('/user/12345', {
+  name: 'new name'
+}, {
+  cancelToken: source.token
+})
+
+// 取消请求 (message 参数是可选的)
+source.cancel('Operation canceled by the user.');
+// 或
+controller.abort(); // 不支持 message 参数
+```
+
+
+
+# 请求体编码
+
+## 使用`application/x-www-form-urlencoded`格式
+
+**URLSearchParams**
+
+默认情况下，axios将 JavaScript 对象序列化为 `JSON` 。 要以`application/x-www-form-urlencoded`格式发送数据，您可以使用`URLSearchParams`API，此API被大多数主流浏览器和v10版本的Node.js支持。
 
 ```js
 const params = new URLSearchParams({ foo: 'bar' });
 params.append('extraparam', 'value');
 axios.post('/foo', params);
+
+//
+const url = require('url');
+const params = new url.URLSearchParams({ foo: 'bar' });
+params.append('extraparam', 'value');
+axios.post('/foo', params.toString());
 ```
 
-### Query string (Older browsers)
+**Query String**
 
-For compatibility with very old browsers, there is a [polyfill](https://github.com/WebReflection/url-search-params) available (make sure to polyfill the global environment).
+为了兼容旧版本的浏览器，可以使用polyfill（确保polyfill 全局环境）。
 
-Alternatively, you can encode data using the [`qs`](https://github.com/ljharb/qs) library:
+或者， 您可以使用[`qs`](https://github.com/ljharb/qs) 库编码数据:
 
 ```js
 const qs = require('qs');
 axios.post('/foo', qs.stringify({ 'bar': 123 }));
 ```
 
-Or in another way (ES6),
+或者，用另一种方式 (ES6),
 
 ```js
 import qs from 'qs';
@@ -861,25 +886,24 @@ const options = {
 axios(options);
 ```
 
-### Older Node.js versions
+**旧版本Node.js**
 
-For older Node.js engines, you can use the [`querystring`](https://nodejs.org/api/querystring.html) module as follows:
+在旧版本 Node.js 引擎中， 可以使用 `querystring`模块，如下所示:
 
 ```js
 const querystring = require('querystring');
-axios.post('https://something.com/', querystring.stringify({ foo: 'bar' }));
+axios.post('http://something.com/', querystring.stringify({ foo: 'bar' }));
 ```
 
-You can also use the [`qs`](https://github.com/ljharb/qs) library.
+您也可以使用 `qs` 库。
 
-> NOTE: 
-> The `qs` library is preferable if you need to stringify nested objects, as the `querystring` method has [known issues](https://github.com/nodejs/node-v0.x-archive/issues/1665) with that use case.
+注意：如果需要对嵌套对象进行字符串化处理，则最好使用 `qs` 库，因为 querystring 方法在嵌套对象字符串化处理时存在问题。
 
-### 🆕 Automatic serialization to URLSearchParams
+**🆕 Automatic serialization to URLSearchParams**
 
-Axios will automatically serialize the data object to urlencoded format if the content-type header is set to "application/x-www-form-urlencoded".
+如果'content-type'请求头被设为'application/x-www-form-urlencoded'，axios会自动地将数据对象序列化为urlencoded格式。
 
-```
+```js
 const data = {
   x: 1,
   arr: [1, 2, 3],
@@ -892,9 +916,9 @@ await axios.postForm('https://postman-echo.com/post', data,
 );
 ```
 
-The server will handle it as 
+服务器将其处理为：
 
-```js
+```
   {
     x: '1',
     'arr[]': [ '1', '2', '3' ],
@@ -907,11 +931,11 @@ The server will handle it as
     'users[1][name]': 'Thomas',
     'users[1][surname]': 'Anderson'
   }
-````
+```
 
 If your backend body-parser (like `body-parser` of `express.js`) supports nested objects decoding, you will get the same object on the server-side automatically
 
-```js
+```
   var app = express();
   
   app.use(bodyParser.urlencoded({ extended: true })); // support encoded bodies
@@ -924,12 +948,11 @@ If your backend body-parser (like `body-parser` of `express.js`) supports nested
   server = app.listen(3000);
 ```
 
-## Using `multipart/form-data` format
+## 使用`multipart/form-data`格式
 
-### FormData
+**Form data**
 
-To send the data as a `multipart/formdata` you need to pass a formData instance as a payload. 
-Setting the `Content-Type` header is not required as Axios guesses it based on the payload type.
+To send the data as a `multipart/formdata` you need to pass a formData instance as a payload. Setting the `Content-Type` header is not required as Axios guesses it based on the payload type.
 
 ```js
 const formData = new FormData();
@@ -937,7 +960,7 @@ formData.append('foo', 'bar');
 
 axios.post('https://httpbin.org/post', formData);
 ```
-  
+
 In node.js, you can use the [`form-data`](https://github.com/form-data/form-data) library as follows:
 
 ```js
@@ -951,10 +974,9 @@ form.append('my_file', fs.createReadStream('/foo/bar.jpg'));
 axios.post('https://example.com', form)
 ```
 
-### 🆕 Automatic serialization to FormData
+**🆕 Automatic serialization to FormData**
 
-Starting from `v0.27.0`, Axios supports automatic object serialization to a FormData object if the request `Content-Type` 
-header is set to `multipart/form-data`.
+Starting from `v0.27.0`, Axios supports automatic object serialization to a FormData object if the request `Content-Type` header is set to `multipart/form-data`.
 
 The following request will submit the data in a FormData format (Browser & Node.js):
 
@@ -970,8 +992,7 @@ axios.post('https://httpbin.org/post', {x: 1}, {
 
 In the `node.js` build, the ([`form-data`](https://github.com/form-data/form-data)) polyfill is used by default.
 
-You can overload the FormData class by setting the `env.FormData` config variable,
-but you probably won't need it in most cases:
+You can overload the FormData class by setting the `env.FormData` config variable, but you probably won't need it in most cases:
 
 ```js
 const axios= require('axios');
@@ -987,27 +1008,20 @@ axios.post('https://httpbin.org/post', {x: 1, buf: new Buffer(10)}, {
 Axios FormData serializer supports some special endings to perform the following operations:
 
 - `{}` - serialize the value with JSON.stringify
-- `[]` - unwrap the array-like object as separate fields with the same key 
+- `[]` - unwrap the array-like object as separate fields with the same key
 
-> NOTE: 
-> unwrap/expand operation will be used by default on arrays and FileList objects
+> NOTE: unwrap/expand operation will be used by default on arrays and FileList objects
 
 FormData serializer supports additional options via `config.formSerializer: object` property to handle rare cases:
 
-- `visitor: Function` - user-defined visitor function that will be called recursively to serialize the data object
-to a `FormData` object by following custom rules.
-
+- `visitor: Function` - user-defined visitor function that will be called recursively to serialize the data object to a `FormData` object by following custom rules.
 - `dots: boolean = false` - use dot notation instead of brackets to serialize arrays and objects;
-
-- `metaTokens: boolean = true` - add the special ending (e.g `user{}: '{"name": "John"}'`) in the FormData key. 
-The back-end body-parser could potentially use this meta-information to automatically parse the value as JSON.
-
+- `metaTokens: boolean = true` - add the special ending (e.g `user{}: '{"name": "John"}'`) in the FormData key. The back-end body-parser could potentially use this meta-information to automatically parse the value as JSON.
 - `indexes: null|false|true = false` - controls how indexes will be added to unwrapped keys of `flat` array-like objects
+  - `null` - don't add brackets (`arr: 1`, `arr: 2`, `arr: 3`)
+  - `false`(default) - add empty brackets (`arr[]: 1`, `arr[]: 2`, `arr[]: 3`)
+  - `true` - add brackets with indexes (`arr[0]: 1`, `arr[1]: 2`, `arr[2]: 3`)
 
-    - `null` - don't add brackets (`arr: 1`, `arr: 2`, `arr: 3`) 
-    - `false`(default) - add empty brackets (`arr[]: 1`, `arr[]: 2`, `arr[]: 3`)
-    - `true` - add brackets with indexes  (`arr[0]: 1`, `arr[1]: 2`, `arr[2]: 3`)
-    
 Let's say we have an object like this one:
 
 ```js
@@ -1038,14 +1052,13 @@ formData.append('users[1][surname]', 'Anderson');
 formData.append('obj2{}', '[{"x":1}]');
 ```
 
-Axios supports the following shortcut methods: `postForm`, `putForm`, `patchForm`
-which are just the corresponding http methods with the `Content-Type` header preset to `multipart/form-data`.
+Axios supports the following shortcut methods: `postForm`, `putForm`, `patchForm` which are just the corresponding http methods with the `Content-Type` header preset to `multipart/form-data`.
 
-## Files Posting
+# 文件传输
 
 You can easily sumbit a single file
 
-```js
+```
 await axios.postForm('https://httpbin.org/post', {
   'myVar' : 'foo',
   'file': document.querySelector('#fileInput').files[0] 
@@ -1054,7 +1067,7 @@ await axios.postForm('https://httpbin.org/post', {
 
 or multiple files as `multipart/form-data`.
 
-```js
+```
 await axios.postForm('https://httpbin.org/post', {
   'files[]': document.querySelector('#fileInput').files 
 });
@@ -1062,23 +1075,23 @@ await axios.postForm('https://httpbin.org/post', {
 
 `FileList` object can be passed directly:
 
-```js
+```
 await axios.postForm('https://httpbin.org/post', document.querySelector('#fileInput').files)
 ```
 
 All files will be sent with the same field names: `files[]`.
 
-## 🆕 HTML Form Posting (browser)
+# 🆕 HTML Form Posting (browser)
 
 Pass HTML Form element as a payload to submit it as `multipart/form-data` content.
 
-```js
+```
 await axios.postForm('https://httpbin.org/post', document.querySelector('#htmlForm'));
 ```
 
 `FormData` and `HTMLForm` objects can also be posted as `JSON` by explicitly setting the `Content-Type` header to `application/json`:
 
-```js
+```
 await axios.post('https://httpbin.org/post', document.querySelector('#htmlForm'), {
   headers: {
     'Content-Type': 'application/json'
@@ -1088,7 +1101,7 @@ await axios.post('https://httpbin.org/post', document.querySelector('#htmlForm')
 
 For example, the Form
 
-```html
+```
 <form id="form">
   <input type="text" name="foo" value="1">
   <input type="text" name="deep.prop" value="2">
@@ -1108,7 +1121,7 @@ For example, the Form
 
 will be submitted as the following JSON object:
 
-```js
+```
 {
   "foo": "1",
   "deep": {
@@ -1124,56 +1137,6 @@ will be submitted as the following JSON object:
     "age": "value2"
   }
 }
-````
-
-Sending `Blobs`/`Files` as JSON (`base64`) is not currently supported.
-
-## Semver
-
-Until axios reaches a `1.0` release, breaking changes will be released with a new minor version. For example `0.5.1`, and `0.5.4` will have the same API, but `0.6.0` will have breaking changes.
-
-## Promises
-
-axios depends on a native ES6 Promise implementation to be [supported](https://caniuse.com/promises).
-If your environment doesn't support ES6 Promises, you can [polyfill](https://github.com/jakearchibald/es6-promise).
-
-## TypeScript
-
-axios includes [TypeScript](https://typescriptlang.org) definitions and a type guard for axios errors.
-
-```typescript
-let user: User = null;
-try {
-  const { data } = await axios.get('/user?ID=12345');
-  user = data.userDetails;
-} catch (error) {
-  if (axios.isAxiosError(error)) {
-    handleAxiosError(error);
-  } else {
-    handleUnexpectedError(error);
-  }
-}
 ```
 
-## Online one-click setup
-
-You can use Gitpod, an online IDE(which is free for Open Source) for contributing or running the examples online.
-
-[![Open in Gitpod](https://gitpod.io/button/open-in-gitpod.svg)](https://gitpod.io/#https://github.com/axios/axios/blob/master/examples/server.js)
-
-
-## Resources
-
-* [Changelog](https://github.com/axios/axios/blob/master/CHANGELOG.md)
-* [Upgrade Guide](https://github.com/axios/axios/blob/master/UPGRADE_GUIDE.md)
-* [Ecosystem](https://github.com/axios/axios/blob/master/ECOSYSTEM.md)
-* [Contributing Guide](https://github.com/axios/axios/blob/master/CONTRIBUTING.md)
-* [Code of Conduct](https://github.com/axios/axios/blob/master/CODE_OF_CONDUCT.md)
-
-## Credits
-
-axios is heavily inspired by the [$http service](https://docs.angularjs.org/api/ng/service/$http) provided in [AngularJS](https://angularjs.org/). Ultimately axios is an effort to provide a standalone `$http`-like service for use outside of AngularJS.
-
-## License
-
-[MIT](LICENSE)
+Sending `Blobs`/`Files` as JSON (`base64`) is not currently supported.
